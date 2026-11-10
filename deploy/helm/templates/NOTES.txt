@@ -1,0 +1,5 @@
+longinfer 已部署。
+
+1. 查看状态：kubectl get pods
+2. 端口转发：kubectl port-forward svc/{{ include "longinfer.fullname" . }} 8000:{{ .Values.service.port }}
+3. 访问控制台：http://127.0.0.1:8000/console

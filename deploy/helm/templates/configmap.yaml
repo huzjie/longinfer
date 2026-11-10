@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "longinfer.fullname" . }}-config
+  labels: {{ include "longinfer.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    provider: {{ .Values.config.provider }}
+    model: {{ .Values.config.model }}
+    dist:
+      expert_parallel: {{ .Values.config.expertParallel }}
+      vocab_parallel: {{ .Values.config.vocabParallel }}

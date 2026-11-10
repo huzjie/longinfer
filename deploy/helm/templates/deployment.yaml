@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "longinfer.fullname" . }}
+  labels: {{ include "longinfer.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels: {{ include "longinfer.labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels: {{ include "longinfer.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: longinfer
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: LFI_PROVIDER
+              value: {{ .Values.config.provider | quote }}
+            - name: LFI_MODEL
+              value: {{ .Values.config.model | quote }}
+          resources: {{ toYaml .Values.resources | nindent 12 }}

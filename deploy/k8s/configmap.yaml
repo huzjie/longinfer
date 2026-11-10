@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longinfer-config
+  namespace: longinfer
+data:
+  config.yaml: |
+    provider: mock
+    model: longcat-2.5-mock
+    dist:
+      world_size: 8
+      expert_parallel: 8
+      vocab_parallel: 2
+    api:
+      host: 0.0.0.0
+      port: 8000

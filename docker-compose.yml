@@ -1,0 +1,15 @@
+services:
+  longinfer:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LFI_PROVIDER: ${LFI_PROVIDER:-mock}
+      LFI_MODEL: ${LFI_MODEL:-longcat-2.5-mock}
+      LFI_BASE_URL: ${LFI_BASE_URL:-}
+    volumes:
+      - longinfer_models:/root/.longinfer
+    restart: unless-stopped
+
+volumes:
+  longinfer_models:

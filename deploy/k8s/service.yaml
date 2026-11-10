@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: longinfer
+  namespace: longinfer
+spec:
+  selector:
+    app: longinfer
+  ports:
+    - port: 8000
+      targetPort: 8000
+  type: ClusterIP

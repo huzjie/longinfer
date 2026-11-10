@@ -1,0 +1,6 @@
+apiVersion: v2
+name: longinfer
+description: 长程多模态 MoE 智能体推理与部署引擎
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

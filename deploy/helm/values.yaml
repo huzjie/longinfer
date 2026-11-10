@@ -1,0 +1,22 @@
+replicaCount: 1
+image:
+  repository: longinfer
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8000
+config:
+  provider: mock
+  model: longcat-2.5-mock
+  expertParallel: 8
+  vocabParallel: 2
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1"
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70

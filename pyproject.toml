@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "longinfer"
+version = "0.1.0"
+description = "长程多模态 MoE 智能体推理与部署引擎（稀疏路由 / W4A4 量化 / 视觉 RVQ / 长程智能体运行时 / 分布式部署）"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "huzjie" }]
+keywords = ["moe", "sparse-routing", "quantization", "w4a4", "int4", "rvq", "multimodal", "long-horizon-agent", "llm-inference", "serving", "vllm", "sglang", "distributed-inference"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+api = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.6"]
+yaml = ["pyyaml>=6.0"]
+web = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.6"]
+all = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.6", "pyyaml>=6.0"]
+
+[project.scripts]
+longinfer = "longinfer.cli.main:main"
+
+[tool.setuptools.packages.find]
+include = ["longinfer*"]

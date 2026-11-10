@@ -1,0 +1,75 @@
+# longinfer 全量配置模板 —— 复制为 config.yaml 使用（也可以全部用环境变量 LFI_* 覆盖）
+# 内核（moe/quant/vision/agent/dist/engine）默认纯标准库、离线可跑，无需任何外部依赖。
+
+home: ~/.longinfer
+models_dir: ~/.longinfer/models
+checkpoint_dir: ~/.longinfer/checkpoints
+log_dir: ~/.longinfer/logs
+log_level: INFO
+
+# 默认推理后端：mock（离线，零依赖）| vllm | sglang | ollama | openai | longcat | ...
+provider: mock
+model: longcat-2.5-mock
+base_url: null          # 真实后端地址，如 http://127.0.0.1:8000/v1
+api_key: null
+
+# ---- 稀疏 MoE ----
+moe:
+  num_experts: 256
+  top_k: 8              # 每 token 激活专家数
+  capacity_factor: 1.25
+  aux_loss_coef: 0.01   # 辅助负载均衡损失系数
+  router_jitter: 0.0
+  expert_parallel_size: 8
+
+# ---- W4A4 量化 ----
+quant:
+  method: w4a4           # w4a4 | w8a8 | fp8 | awq | gptq
+  group_size: 128
+  sym: true
+  protect_outliers: true # AWQ 式按激活幅值保护
+  calibrate_samples: 128
+
+# ---- 视觉 RVQ ----
+vision:
+  patch_size: 16
+  image_size: 1024
+  rvq_levels: 4          # 残差量化层级
+  codebook_size: 16384
+  code_dim: 256
+
+# ---- 长程智能体 ----
+agent:
+  max_steps: 200
+  checkpoint_every: 10
+  partial_rollout: true
+  judge_provider: mock   # 轨迹评判员用的后端
+  oversample_by_pass_rate: true
+  sandbox:
+    offline: true        # 任务执行期间断网
+    clear_git_history: true
+    clear_file_cache: true
+
+# ---- 分布式部署 ----
+dist:
+  world_size: 1
+  tensor_parallel: 1
+  expert_parallel: 8
+  vocab_parallel: 2
+  dynamic_expert_replication: true   # MoonEP 式动态专家复制
+  zero_copy_comm: true
+
+# ---- 控制面 ----
+api:
+  host: 127.0.0.1
+  port: 8000
+  auth_token: null
+  max_batch_size: 256
+  max_context: 1000000
+
+# ---- 观测 ----
+observability:
+  tracing: true
+  metrics: true
+  replay: true
+  audit: true

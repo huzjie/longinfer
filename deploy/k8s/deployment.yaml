@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: longinfer
+  namespace: longinfer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: longinfer
+  template:
+    metadata:
+      labels:
+        app: longinfer
+    spec:
+      containers:
+        - name: longinfer
+          image: longinfer:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: LFI_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: longinfer-config
+                  key: provider
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1"
+            limits:
+              memory: "64Gi"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
